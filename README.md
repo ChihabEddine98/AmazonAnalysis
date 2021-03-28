@@ -1,2 +1,2 @@
 # AmazonAnalysis
-Sentiments analysis &amp; product attractiveness scaling 
+Sentiments Analysis &amp; product attractiveness scaling 
