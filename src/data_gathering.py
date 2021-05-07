@@ -2,7 +2,7 @@
 # Amazon.fr webpage ) and saving it into a csv file
 
 # Our imports
-from common.Settings import reviews_div_cls,rev_cols
+from src.common.settings import reviews_div_cls,rev_cols
 
 # System Imports
 import os
@@ -67,9 +67,7 @@ def init_webdriver():
 
 # This function help us to generate the dataset of reviews
 # and also the dataframe of several products
-def build_dataset(prod_urls):
-    driver = init_webdriver()
-
+def build_dataset(prod_urls,driver):
     lst_rev = []
     for category, products in prod_urls.items():
         for prod in products:
@@ -82,16 +80,17 @@ def build_dataset(prod_urls):
     ds = df_rev[df_rev["Rev_Home"] == 'France']
     ds = ds[["Rev_Title", "Rev_Bdy"]]
 
-    dataset_path = os.path.join(root_path,'common','reviews.csv')
+    dataset_path = os.path.join(root_path, 'common', 'reviews.csv')
     ds.to_csv(dataset_path, index=False)
 
 
 
 if __name__ == '__main__':
-    settings_path = os.path.join(root_path,'common','settings.pkl')
+    settings_path = os.path.join(root_path, 'common', 'settings.pkl')
     settings_file = open(settings_path, "rb")
     prod_urls = pk.load(settings_file)
-
-    build_dataset(prod_urls)
+    print(prod_urls)
+    driver = init_webdriver()
+    build_dataset(prod_urls,driver)
 
     settings_file.close()
