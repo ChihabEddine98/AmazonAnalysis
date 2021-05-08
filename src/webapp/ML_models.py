@@ -4,6 +4,7 @@ import streamlit as st
 
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
 
 root_path = os.path.dirname(os.path.realpath(__file__))
 X_train_path = os.path.join(root_path, '..', 'common', 'X_train.csv')
@@ -38,5 +39,21 @@ def train_knn(n_neighbors,weights='uniform',metric='minkowski'):
 
 @st.cache
 def knn_accuracies():
-    y = [train_knn(i) for i in range(1,21)]
-    return y
+    return [train_knn(i) for i in range(1,21)]
+
+
+@st.cache
+def train_log_regression(C,penalty='l2',tol=1e-4,solver='lbfgs'):
+    X_train, X_test, y_train, y_test = load_data()
+    log_reg = LogisticRegression(C=C,penalty=penalty,tol=tol,solver=solver)
+    log_reg.fit(X_train, y_train)
+    return log_reg.score(X_test,y_test)
+
+@st.cache
+def log_regression_stats():
+    c_ = [1e-4,1e-3,1e-2,1e-1,1,2,3,5,10,20,30,50,100,200,500,1000,2000,5000,10000]
+    l1_ = [train_log_regression(c,penalty='none') for c in c_]
+    l2_ = [train_log_regression(c,penalty='l2') for c in c_]
+    return c_,l1_,l2_
+
+
