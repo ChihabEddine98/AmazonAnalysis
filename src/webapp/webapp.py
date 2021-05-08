@@ -5,7 +5,8 @@ import altair as alt
 import numpy as np
 import pandas as pd
 
-from ML_models import train_svm,train_knn,knn_accuracies,train_log_regression,log_regression_stats
+from ML_models import train_svm,train_knn,knn_accuracies,train_log_regression,\
+    log_regression_stats,svm_stats
 
 
 
@@ -65,6 +66,20 @@ if st.checkbox('Show Parameters :'):
             time.sleep(5)
             st.success(f'Accuracy : {svm_acc}')
 
+# Row
+if st.checkbox('Show SVM Stats : '):
+    x , y_1 , y_2= svm_stats()
+
+    svm_acc_df = pd.DataFrame({'C':x,'rbf':y_1,'linear':y_2},columns=['C', 'rbf','linear'])
+
+    svm_acc_df = svm_acc_df.melt('C', var_name='name', value_name='Accuracy')
+
+    svm_acc_chart = alt.Chart(svm_acc_df).mark_line().encode(
+      x=alt.X('C:N'),
+      y=alt.Y('Accuracy:Q'),
+      color=alt.Color("name:N")
+    ).properties(title="SVM Accuaracies in function of kernel and C")
+    st.altair_chart(svm_acc_chart, use_container_width=True)
 
 # Row
 st.write('## Best Parameters (via **GridSearchCv**): ')

@@ -23,11 +23,18 @@ def load_data():
 
 
 @st.cache
-def train_svm(kernel,degree,C,gamma,decision_function):
+def train_svm(C,kernel,degree=2,gamma=1e-3,decision_function='ovo'):
     X_train, X_test, y_train, y_test = load_data()
     svm = SVC(kernel=kernel,degree=degree, C=C,gamma=gamma, decision_function_shape=decision_function)
     svm.fit(X_train, y_train)
     return svm.score(X_test,y_test)
+
+@st.cache
+def svm_stats():
+    c_ = [1e-4,1e-3,1e-2,1e-1,1,2,3,5,10,20,30,50,100,200,500,1000,2000,5000,10000]
+    rbf = [train_svm(c,kernel='rbf') for c in c_]
+    linear = [train_svm(c,kernel='linear') for c in c_]
+    return c_,rbf,linear
 
 
 @st.cache
