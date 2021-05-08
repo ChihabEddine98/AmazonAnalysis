@@ -24,8 +24,8 @@ st.write('# 1. Dataset : ')
 
 st.write("This Dataset was Scrapped From [Amazon's](https://www.amazon.fr/) website and cleaned")
 dataset_path = os.path.join(root_path, '..', 'common', 'reviews_dataset.csv')
-chart_data = pd.read_csv(dataset_path)
-#st.write(chart_data)
+ds = pd.read_csv(dataset_path)
+st.write(ds)
 #################
 
 ##################################################
