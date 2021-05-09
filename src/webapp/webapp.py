@@ -2,11 +2,17 @@ import os
 import time
 import streamlit as st
 import altair as alt
-import numpy as np
 import pandas as pd
 
 from ML_models import train_svm,train_knn,knn_accuracies,train_log_regression,\
     log_regression_stats,svm_stats
+from dataset_builder import add_sub_pol_to_dataset
+
+import matplotlib.pyplot as plt
+import plotly.express as px
+from wordcloud import WordCloud
+from nltk.corpus import stopwords
+
 
 
 
@@ -14,7 +20,27 @@ from ML_models import train_svm,train_knn,knn_accuracies,train_log_regression,\
 
 ###################### Settings ######################
 root_path = os.path.dirname(os.path.realpath(__file__))
+ds_path = os.path.join(root_path, '..', 'common', 'dataset.csv')
+clean_ds_path = os.path.join(root_path, '..', 'common', 'clean_dataset.csv')
+stopwords = stopwords.words('french')
+stopwords.append('a')
+stopwords.append('e')
+stopwords.append('Tre')
+stopwords.append('cest')
 #######################################################
+
+
+###################### Utils ######################
+@st.cache
+def load_data():
+    ds = pd.read_csv(ds_path)
+    clean_ds = pd.read_csv(clean_ds_path)
+    clean_ds = add_sub_pol_to_dataset(clean_ds)
+    clean_ds = clean_ds.drop(clean_ds[clean_ds.Subjectivity > 1.0].index)
+    return ds,clean_ds
+
+######################################################
+
 
 
 # Dataset
@@ -22,10 +48,91 @@ st.write('# Amazon Analysis')
 st.write('---')
 st.write('# 1. Dataset : ')
 
+ds,clean_ds = load_data()
+
+
 st.write("This Dataset was Scrapped From [Amazon's](https://www.amazon.fr/) website and cleaned")
-dataset_path = os.path.join(root_path, '..', 'common', 'reviews_dataset.csv')
-ds = pd.read_csv(dataset_path)
 st.write(ds)
+st.write('# 1.1 Clean Dataset : ')
+st.write(clean_ds)
+
+
+st.write('# 1.2 Data Stats : ')
+st.write('## 1.1.1 Reviews Rating Stats : ')
+
+rate_stats = pd.value_counts(clean_ds['Rev_Rate'].values, sort=True)
+fig = px.histogram(clean_ds, x="Rev_Rate", color="Rev_Rate")
+fig.update_layout(
+    title_text='Rating (# of stars)',  # title of plot
+    xaxis_title_text='# Stars',  # xaxis label
+    yaxis_title_text='Count',  # yaxis label
+    bargap=0.2,
+    bargroupgap=0.1
+)
+st.plotly_chart(fig)
+
+fig = px.pie(clean_ds, values='Rev_Rate', names='Rev_Rate')
+st.plotly_chart(fig)
+
+
+st.write('## 1.1.2 Reviews Sentiments Stats : ')
+fig = px.histogram(clean_ds, x="Sentiment", color="Sentiment")
+st.plotly_chart(fig)
+
+st.write('## 1.1.3 Reviews Helpfulness Stats : ')
+df = clean_ds.groupby(['Prod_ID'])['Rev_Hlp'].sum()
+df = df.to_frame()
+df['Prod_ID'] = clean_ds['Prod_ID'].unique()
+fig = px.bar(df, x="Prod_ID", y="Rev_Hlp")
+
+st.plotly_chart(fig)
+
+
+st.write('## 1.1.4 Reviews Ploarity & Subjectivty Stats : ')
+
+fig = px.histogram(clean_ds, x="Polarity", y="Subjectivity", color="Sentiment", marginal="box",
+                   hover_data=clean_ds.columns)
+st.plotly_chart(fig)
+
+
+fig = px.scatter(clean_ds, x="Polarity", y="Subjectivity", color="Sentiment")
+st.plotly_chart(fig)
+
+st.write("# WordClouds")
+
+
+pos_ds = clean_ds[clean_ds['Sentiment'] == 'Positive']
+neg_ds = clean_ds[clean_ds['Sentiment'] == 'Negative']
+neu_ds = clean_ds[clean_ds['Sentiment'] == 'Neutral']
+
+
+
+pos_wc = WordCloud(width = 400, height = 400,
+                background_color ='white',
+                stopwords = stopwords,
+                min_font_size = 10)
+
+
+pos_wc = pos_wc.generate(' '.join(pos_ds['Rev_Title']))
+
+neg_wc = WordCloud(width = 400, height = 400,
+                background_color ='white',
+                stopwords = stopwords,
+                min_font_size = 10)
+
+neg_wc = neg_wc.generate(' '.join(neg_ds['Rev_Title']))
+
+neu_wc = WordCloud(width = 400, height = 400,
+                background_color ='white',
+                stopwords = stopwords,
+                min_font_size = 10)
+
+neu_wc = neu_wc.generate(' '.join(neu_ds['Rev_Title']))
+
+st.image(pos_wc.to_array())
+st.image(neg_wc.to_array())
+st.image(neu_wc.to_array())
+
 #################
 
 ##################################################

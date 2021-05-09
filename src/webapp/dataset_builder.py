@@ -14,6 +14,8 @@ from textblob_fr import PatternTagger, PatternAnalyzer
 
 from sklearn.model_selection import train_test_split
 
+import plotly.express as px
+
 import ssl
 
 try:
@@ -50,11 +52,15 @@ def clean_review_body(rev):
 
 # Clean reviews DataFrame
 def clean_reviews(df_rev):
+    # Because NaN are those with (une personne a commenté )
+    df_rev['Rev_Hlp'] = df_rev.Rev_Hlp.str.split(' ').apply(lambda x: 1 if x[0] == 'Une' else int(x[0]))
+
     # Cleaning Hlp Review
-    df_rev['Rev_Hlp'] = df_rev.Rev_Hlp.apply(lambda x: re.sub("[^0-9]" ,"" ,x))
+    # df_rev['Rev_Hlp'] = df_rev.Rev_Hlp.apply(lambda x: re.sub("[^0-9]" ,"" ,x))
+
     # Cleaning Rate review
     df_rev['Rev_Rate'] = df_rev.Rev_Rate.str.split(' ').apply(lambda x: float(x[0].replace(',' ,'.')))
-    # Cleaning Home Review
+
     df_rev['Rev_Home'] = df_rev.Rev_Home.str.split(' ').apply(lambda x: x[2])
 
     # Cleaning the body of the review
@@ -68,7 +74,7 @@ def clean_reviews(df_rev):
 ##############################################################
 
 def clean_dataset():
-    df_rev = pd.read_csv(os.path.join(root_path,'..','common','reviews_dataset.csv'))
+    df_rev = pd.read_csv(os.path.join(root_path, '..', 'common', 'dataset.csv'))
     df_rev = clean_reviews(df_rev)
     ds = df_rev[df_rev["Rev_Home"] == 'France']
     ds = ds[["Rev_Title","Rev_Bdy"]]
@@ -102,12 +108,12 @@ tb = Blobber(pos_tagger=PatternTagger(), analyzer=PatternAnalyzer())
 
 # To exctract polarity from a message **msg
 def get_polarity(msg):
-    return tb(msg).sentiment[0]
+    return tb(str(msg)).sentiment[0]
 
 
 # To exctract subjectivity from a message **msg
 def get_subjectivity(msg):
-    return tb(msg).sentiment[1]
+    return tb(str(msg)).sentiment[1]
 
 
 def encode_sentiment(sentiment):
@@ -131,17 +137,36 @@ def decode_sentiment(data):
 def add_sub_pol_to_dataset(ds):
     ds['Subjectivity'] = ds['Rev_Bdy'].apply(get_subjectivity)
     ds['Polarity'] = ds['Rev_Bdy'].apply(get_polarity)
-    ds['Title_Polarity'] = ds['Rev_Title'].apply(get_polarity)
     ds['Sentiment'] = ds['Polarity'].apply(decode_sentiment)
     return ds
 
 
+def dataset_merge():
+    ds_path = os.path.join(root_path, '..', 'common', 'dataset.csv')
+    ds1_path = os.path.join(root_path, '..', 'common', 'reviews_dataset.csv')
+    ds2_path = os.path.join(root_path, '..', 'common', 'reviews_dataset_1.csv')
+    ds1 = pd.read_csv(ds1_path)
+    ds2 = pd.read_csv(ds2_path)
+    ds2['Prod_ID'] = ds2['Prod_ID'].map(lambda x : 20 if x == 10 else x)
+    frames = [ds1,ds2]
+    ds = pd.concat(frames)
+    ds.reset_index(drop=True,inplace=True)
+    ds.to_csv(ds_path,index=False)
+    return ds
+
+def save_dataset(ds):
+    ds_path = os.path.join(root_path, '..', 'common', 'clean_dataset.csv')
+    ds.to_csv(ds_path,index=False)
 
 
 
 if __name__ == '__main__':
 
     df_rev, ds, X = clean_dataset()
+
+    save_dataset(df_rev)
+
+    '''
     mx_rev = data_to_matrix(X)
     ds = add_sub_pol_to_dataset(ds)
     y = ds['Sentiment'].apply(encode_sentiment)
@@ -153,3 +178,6 @@ if __name__ == '__main__':
     X_test.to_csv(os.path.join(root_path,'..','common','X_test.csv'),index=False)
     y_train.to_csv(os.path.join(root_path,'..','common','y_train.csv'),index=False)
     y_test.to_csv(os.path.join(root_path,'..','common','y_test.csv'),index=False)
+
+
+    '''
