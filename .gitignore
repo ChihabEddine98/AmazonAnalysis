@@ -132,4 +132,3 @@ dmypy.json
 .idea
 .venv
 .vscode
-*.csv
