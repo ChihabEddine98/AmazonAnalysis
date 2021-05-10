@@ -5,6 +5,7 @@ import streamlit as st
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 
 root_path = os.path.dirname(os.path.realpath(__file__))
 X_train_path = os.path.join(root_path, '..', 'common', 'X_train.csv')
@@ -19,11 +20,11 @@ def load_data():
     X_test = pd.read_csv(X_test_path)
     y_train = pd.read_csv(y_train_path)
     y_test = pd.read_csv(y_test_path)
-    return X_train[:300],X_test[:200],y_train[:300],y_test[:200]
+    return X_train[:1200],X_test[:600],y_train[:1200],y_test[:600]
 
 
 @st.cache
-def train_svm(C,kernel,degree=2,gamma=1e-3,decision_function='ovo'):
+def train_svm(C=1,kernel='rbf',degree=2,gamma=1e-3,decision_function='ovo'):
     X_train, X_test, y_train, y_test = load_data()
     svm = SVC(kernel=kernel,degree=degree, C=C,gamma=gamma, decision_function_shape=decision_function)
     svm.fit(X_train, y_train)
@@ -63,4 +64,10 @@ def log_regression_stats():
     l2_ = [train_log_regression(c,penalty='l2') for c in c_]
     return c_,l1_,l2_
 
+@st.cache
+def train_random_forest(n_estimators=100,max_depth=5,min_samples_split=2,min_samples_leaf=2):
+    X_train, X_test, y_train, y_test = load_data()
+    rand_forest = RandomForestClassifier(n_estimators=n_estimators,max_depth=max_depth,min_samples_split=min_samples_split,min_samples_leaf=min_samples_split)
+    rand_forest.fit(X_train, y_train)
+    return rand_forest.score(X_test,y_test)
 

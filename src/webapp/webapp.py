@@ -5,11 +5,12 @@ import altair as alt
 import pandas as pd
 
 from ML_models import train_svm,train_knn,knn_accuracies,train_log_regression,\
-    log_regression_stats,svm_stats
+    log_regression_stats,svm_stats,train_random_forest
 from dataset_builder import add_sub_pol_to_dataset
 
 import matplotlib.pyplot as plt
 import plotly.express as px
+import seaborn as sns
 from wordcloud import WordCloud
 from nltk.corpus import stopwords
 
@@ -27,6 +28,7 @@ stopwords.append('a')
 stopwords.append('e')
 stopwords.append('Tre')
 stopwords.append('cest')
+amazon_img_path = 'https://i1.wp.com/www.joptimisemonsite.fr/wp-content/uploads/2015/02/logo-amazon.jpg?fit=810%2C295&ssl=1&is-pending-load=1'
 #######################################################
 
 
@@ -44,7 +46,11 @@ def load_data():
 
 
 # Dataset
-st.write('# Amazon Analysis')
+st.image(amazon_img_path,width=400)
+st.write('# Amazon Sentiment Analysis')
+st.write('## By : ')
+st.write('- [Abdelkader Chihab Benamara](https://www.linkedin.com/in/chihab-eddine-benamara-65b811155/)')
+st.write('- [Aymen Djelid](https://www.linkedin.com/in/djelidaymen4/)')
 st.write('---')
 st.write('# 1. Dataset : ')
 
@@ -95,8 +101,16 @@ fig = px.histogram(clean_ds, x="Polarity", y="Subjectivity", color="Sentiment", 
 st.plotly_chart(fig)
 
 
-fig = px.scatter(clean_ds, x="Polarity", y="Subjectivity", color="Sentiment")
+fig = px.scatter(clean_ds, x="Polarity", y="Subjectivity",color="Sentiment")
 st.plotly_chart(fig)
+
+
+fig, ax = plt.subplots()
+ax = sns.boxenplot(x='Rev_Rate', y='Polarity', data=clean_ds)
+plt.xlabel(' # Of Stars')
+plt.title('Polarity Grouped by Stars')
+st.pyplot(fig)
+
 
 st.write("# WordClouds")
 
@@ -116,7 +130,7 @@ pos_wc = WordCloud(width = 400, height = 400,
 pos_wc = pos_wc.generate(' '.join(pos_ds['Rev_Title']))
 
 neg_wc = WordCloud(width = 400, height = 400,
-                background_color ='white',
+                background_color ='black',
                 stopwords = stopwords,
                 min_font_size = 10)
 
@@ -155,7 +169,7 @@ if st.checkbox('Show Parameters :'):
     svm_degree = col2.slider('Degree', min_value=2, max_value=5)
 
     # Row
-    svm_c = col1.number_input('C',min_value=0.0,value= 1.0)
+    svm_c = col1.number_input('C',min_value=0,value= 1)
     svm_gamma = col2.number_input('Gamma', min_value=0.0, value=1e-2)
 
     # Row
@@ -168,8 +182,8 @@ if st.checkbox('Show Parameters :'):
 
     if svm_btn :
         st.spinner()
-        with st.spinner(text='In progress'):
-            svm_acc = train_svm(svm_kernel, svm_degree, svm_c, svm_gamma, svm_decision)
+        with st.spinner(text='Training the SVM model...'):
+            svm_acc = train_svm(svm_c,svm_kernel, svm_degree, svm_gamma, svm_decision)
             time.sleep(5)
             st.success(f'Accuracy : {svm_acc}')
 
@@ -290,6 +304,47 @@ st.write('## Best Parameters (via **GridSearchCv**): ')
 if st.checkbox('Show Best Parameters :  '):
     best_params = st.json({'penalty':'l2','C':'1000','solver':'lbfgs'})
 ##################################################
+
+
+
+# RandomForest :
+##################################################
+st.write('## 2.3 Random Forest : ')
+st.write(' Choose your parameters to train the **RandomForest** model : ')
+
+if st.checkbox('Show Parameters :   '):
+    col1, col2 = st.beta_columns(2)
+
+    # Row
+    rand_estimators = col1.number_input('n_estimators',min_value=80,value= 100, max_value=1500)
+    rand_depth = col2.number_input('max_depth',min_value=1,value= 5, max_value=50)
+
+    # Row
+    rand_splits = col1.number_input('min_samples_split',min_value=2,value= 10, max_value=100)
+    rand_leaf = col2.number_input('min_samples_leaf',min_value=1,value= 5, max_value=30)
+
+    # Row
+    rand_btn = st.button('[RandForest] Submit')
+
+    if rand_btn :
+        st.spinner()
+        with st.spinner(text='Trainning RandomForest...'):
+            rand_acc = train_random_forest(rand_estimators, rand_depth, rand_splits, rand_leaf)
+            time.sleep(5)
+            st.success(f'Random Forest Accuracy : {rand_acc}')
+
+# Row
+st.write('## Best Parameters (via **GridSearchCv**): ')
+if st.checkbox('Show Best Parameters :   '):
+    best_params = st.json({'n_estimators':200,'max_depth':20,'min_samples_split':5,'min_samples_leaf':5})
+##################################################
+
+
+
+
+
+
+
 
 
 
