@@ -164,9 +164,7 @@ if __name__ == '__main__':
 
     df_rev, ds, X = clean_dataset()
 
-    save_dataset(df_rev)
 
-    '''
     mx_rev = data_to_matrix(X)
     ds = add_sub_pol_to_dataset(ds)
     y = ds['Sentiment'].apply(encode_sentiment)
@@ -179,5 +177,3 @@ if __name__ == '__main__':
     y_train.to_csv(os.path.join(root_path,'..','common','y_train.csv'),index=False)
     y_test.to_csv(os.path.join(root_path,'..','common','y_test.csv'),index=False)
 
-
-    '''
