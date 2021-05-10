@@ -1,0 +1,113 @@
+%%%%    CHANGER mathsrc de euler en mathcal en gardant celui de LaTeX
+%\let\mathcaltmp=\mathcal
+%\let\mathscrtmp=\mathscr
+%\usepackage{euler}
+%\let\mathcal=\mathscr
+%\let\mathscr=\mathscrtmp
+%%%%
+\usepackage[mathscr]{euscript}
+
+\newcommand{\tsc}{\textsc}				%style capital
+\newcommand{\mcl}{\mathcal}				%style semi-cursif
+\newcommand{\scr}{\mathscr}				%style cursif
+\newcommand{\M}{\mathfrak{M}}			%M matrices
+\newcommand{\N}{\mathbb{N}}				%N naturels
+\newcommand{\Z}{\mathbb{Z}}				%Z entiers relatifs
+\newcommand{\Q}{\mathbb{Q}}				%Q fractionnels
+\newcommand{\R}{\mathbb{R}}				%R réels
+\newcommand{\Rn}{\R^n}			%R vécteurs
+\newcommand{\Rnn}{\R^{n\times n}}			%R matrices carrées
+\newcommand{\Rbar}{\overline{\R}}		%R barre, réels incluant infini
+\newcommand{\C}{\mathbb{C}}				%C complexes
+\newcommand{\K}{\mathbb{K}}				%K C ou R
+\renewcommand{\P}{\mathscr{P}}			%P parties
+\renewcommand{\L}{\mathscr{L}}			%L linéaire
+\newcommand{\CC}{\mathscr{C}}			%C fonctions continues
+\newcommand{\dd}{\text{d}}				%Dérivé (dt)
+\newcommand{\Sc}{\scr{S}}				%S réels
+\newcommand{\Cc}{\scr{C}}				%S réels
+\newcommand{\D}{\scr{D}}			%P parties
+\newcommand{\Y}{\scr{Y}}			%P parties
+\newcommand{\X}{\scr{X}}			%P parties
+\newcommand{\SPP}{\scr{S}_{++}^n}		%matrice sym def pos
+\newcommand{\Eps}{\mathcal{E}}              %Eps
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\cad}{\textbf{i.e :}}
+
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=1.5pt] (char) {#1};}}	%Entourer un caractère
+\newcommand{\bam}{\begin{addmargin}[0.5cm]{0cm}}	%Ajouter l'indentation
+\newcommand{\eam}{\end{addmargin}}		%Retirer l'indentation
+\newcommand{\pmoins}{\scalebox{1}[1.0]{\( - \)}}	%Moins moins long
+\newcommand{\ppmoins}{\scalebox{0.5}[1.0]{\( - \)}}	%Moins bien moins long
+\newcommand{\fois}{\!\times\!}			%Multiplier, espaces raccourcis
+\newcommand{\exist}{\exists\,}			%Il existe, espace droit augmenté
+\newcommand{\findem}{\begin{flushright}\vspace{-0.35cm}$\square$\vspace{-0.2cm}\end{flushright}}	%Carré de fin de démonstration
+\newcommand{\DE}{\textsc{d.e.}}			%Division euclidienne
+\newcommand{\av}{\textsc{a.v.}{}}		%Au voisinage
+\newcommand{\im}{\text{Im}}				%Image
+\newcommand{\Ker}{\text{Ker}}			%Noyau
+\newcommand{\sev}{\textsc{s-e.v.}}		%Sous-espace vectoriel
+\newcommand{\Kev}{$\mathbb{K}$-\textsc{ev}}	%K-espace vectoriel
+\newcommand{\rg}{\text{rg}}				%Rang
+\newcommand{\Tr}{\text{Tr}}				%Trace
+\newcommand{\Vect}{\text{Vect}}			%Vect
+\newcommand{\diag}{\text{diag}}			%Diagonale (matrice)
+\newcommand{\Card}{\text{Card}}			%Cardinal
+\newcommand{\Id}{\text{Id}}				%Identité
+\newcommand{\id}{\text{id}}				%Identité
+\newcommand{\ul}{\underline}			%Souligner
+\newcommand{\ol}{\overline}				%Sus-ligner
+\newcommand{\tr}{\prescript{t}{}}		%Transposée
+\newcommand{\com}{\footnotesize\ttfamily}	%Commentaire
+\newcommand{\scol}{\setlength{\arraycolsep}{5pt}}	%Largeur colonnes large
+\newcommand{\vect}{\overrightarrow}		%Sus-flecher
+\newcommand{\ds}{\displaystyle}			%Forcer grand style
+\newcommand{\scrotmp}{\mathchoice{{\scriptstyle\mathcal{O}}} {{\scriptstyle\mathcal{O}}} {{\scriptscriptstyle\mathcal{O}}} {\scalebox{.5}{$\scriptscriptstyle\mathscr{O}$}}}
+\newcommand{\scro}{\scalebox{.8}[1.0]{$\scrotmp$}}%petit o manuscrit
+\newcommand{\dlim}{\ds\lim}				%Limite avec indice en dessous
+\newenvironment{psm}{\left(\begin{smallmatrix}}{\end{smallmatrix}\right)}	%Mini matrice
+
+\makeatletter							%Flèche extensible
+\newcommand{\xxrightarrow}[2][]{\ext@arrow 0359\xrightarrowfill@{#1}{#2}}
+\newcommand{\xrightarrowfill@}{\arrowfill@\relbar\relbar{\mathrel{\smash{\rightarrow}\vphantom{\rightarrow}}}}
+\makeatother
+
+\makeatletter
+\renewcommand{\o}[2][]{\scro_{#1}{\left(#2\right)}} %petit o de
+\renewcommand{\O}[2][]{\mathcal{O}_{#1}{\left(#2\right)}} %grand o de
+\newcommand{\simm}[1]{\,\underset{\raisebox{0.2ex}[0pt][0pt]{\scalebox{0.8}{$#1$}}}{\scalebox{1.1}[0.9]{$\sim$}}\,}			%équivalent à/simmilaire à
+\newcommand{\restr}[2][]{{\left.\kern-\nulldelimiterspace #1\vphantom{\big|} \right|_{\scriptscriptstyle{#2}}}} 				%restreint à
+\newcommand{\comp}[1]{{#1}^{\mathsf{c}}}		%Complémentaire
+\makeatother
+
+%%%%    REMISE DE mathcal (cf debut du fichier)
+%\let\mathcal=\mathcaltmp
+
+\definecolor{primaryColor}{rgb}{0.113, 0.364, 0.631}
+\definecolor{primaryColor}{rgb}{0.6, 0.15, 0.18}
+\definecolor{primaryColor}{rgb}{0.2, 0.45, 0.75}
+\definecolor{secondaryColor}{rgb}{0.6, 0.6, 0,9}
+
+\newcommand{\Exo}[2]{\vskip0.3cm\noindent \textcolor{primaryColor}{\textbf{Exercice #1 : #2 }}
+\vskip0.2cm}
+
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\usepackage{etoolbox}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage[T1]{fontenc}
+
+\definecolor{baseColor}{rgb}{0, 0.4, 1}
+\definecolor{primaryColor}{HTML}{5c5554}
+\definecolor{secondaryColor}{HTML}{101291}
+\definecolor{successColor}{rgb}{0.02, 0.8, 0.25}
+\definecolor{failColor}{rgb}{1, 0, 0}
+\definecolor{mentionColor}{HTML}{dee3de}
+
+\newcommand{\mention}[1]{\colorbox{mentionColor}{\textbf{#1}}}
+
+\usepackage{tikz}
+\usepackage{fontawesome}

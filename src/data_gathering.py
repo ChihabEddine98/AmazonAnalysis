@@ -49,8 +49,10 @@ def reviews_scrapper(driver, prod, rev_url, ds):
         except AttributeError:
             review_home = '0'
 
-        rev_result = tuple(map(lambda x: unicodedata.normalize("NFKD", x.strip()),
-                               [review_title, review_rate, review_body, review_help, review_home]))
+        rev_result = tuple(map(lambda x:
+                               unicodedata.normalize("NFKD", x.strip()),
+                               [review_title, review_rate, review_body,
+                                review_help, review_home]))
         ds.append(rev_result + (prod,))
 
     return ds

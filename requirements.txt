@@ -1,0 +1,12 @@
+streamlit~=0.81.0
+altair~=4.1.0
+pandas~=1.2.4
+matplotlib~=3.3.4
+plotly~=4.14.3
+seaborn~=0.11.1
+wordcloud~=1.8.1
+nltk~=3.6.2
+scikit-learn~=0.24.1
+textblob~=0.15.3
+beautifulsoup4~=4.9.3
+selenium~=3.141.0
