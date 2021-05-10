@@ -1,5 +1,3 @@
-![drawing](https://i1.wp.com/www.joptimisemonsite.fr/wp-content/uploads/2015/02/logo-amazon.jpg?fit=810%2C295&ssl=1&is-pending-load=1)
-
 # Amazon Sentiment Analysis
 ## By :
 - [Abdelkader Chihab Benamara](https://www.linkedin.com/in/chihab-eddine-benamara-65b811155/)
