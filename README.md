@@ -3,7 +3,7 @@
 - [Abdelkader Chihab Benamara](https://www.linkedin.com/in/chihab-eddine-benamara-65b811155/)
 - [Aymen Djelid](https://www.linkedin.com/in/djelidaymen4/)
 ---
-You can checkout the website for more details with amazon reviews sentiment analysis done with `Python's` Library **`Streamlit`**.
+You can check out the website for more details with amazon reviews sentiment analysis done with `Python's` Library **`Streamlit`**.
 The link for the web-application : [here](https://share.streamlit.io/chihabeddine98/amazonanalysis/main/src/webapp/webapp.py)
 
 # Here Some Screenshots : 
