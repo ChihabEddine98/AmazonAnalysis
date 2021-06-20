@@ -1,6 +1,6 @@
 # Amazon Sentiment Analysis
-## By :
-- [Abdelkader Chihab Benamara](https://www.linkedin.com/in/chihab-eddine-benamara-65b811155/)
+## By 
+- [Chihab Benamara](https://www.linkedin.com/in/chihab-eddine-benamara-65b811155/)
 - [Aymen Djelid](https://www.linkedin.com/in/djelidaymen4/)
 ---
 You can check out the website for more details with amazon reviews sentiment analysis done with `Python's` Library **`Streamlit`**.
