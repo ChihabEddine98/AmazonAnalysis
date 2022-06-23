@@ -17,4 +17,4 @@ The link for the web-application : [here](https://share.streamlit.io/chihabeddin
 <img width="804" alt="app_5" src="https://user-images.githubusercontent.com/38104305/117600052-7e9fd680-b14b-11eb-96de-81d8af7d6e0e.png">
 <img width="804" alt="app_6" src="https://user-images.githubusercontent.com/38104305/117600053-7f386d00-b14b-11eb-8e09-bfd94e242a86.png">
 
-# relunch the streamlit app
+# -- relunch the streamlit app
